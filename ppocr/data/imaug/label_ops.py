@@ -1101,12 +1101,12 @@ class VQATokenLabelEncode(object):
             if "bbox" not in ocr_info[idx]:
                 ocr_info[idx]["bbox"] = self.trans_poly_to_bbox(ocr_info[idx]["points"])
 
-        if self.order_method == "tb-yx":
+        if self.order_method == "tb-yx": # 将文本从上到下， 从左到右排序。。。
             ocr_info = order_by_tbyx(ocr_info)
 
         # for re
         train_re = self.contains_re and not self.infer_mode
-        if train_re:
+        if train_re: # False
             ocr_info = self.filter_empty_contents(ocr_info)
 
         height, width, _ = data["image"].shape
@@ -1129,7 +1129,7 @@ class VQATokenLabelEncode(object):
         data["ocr_info"] = copy.deepcopy(ocr_info)
 
         for info in ocr_info:
-            text = info["transcription"]
+            text = info["transcription"]  # 获取文字信息
             if len(text) <= 0:
                 continue
             if train_re:
@@ -1140,7 +1140,7 @@ class VQATokenLabelEncode(object):
                 id2label[info["id"]] = info["label"]
                 relations.extend([tuple(sorted(l)) for l in info["linking"]])
             # smooth_box
-            info["bbox"] = self.trans_poly_to_bbox(info["points"])
+            info["bbox"] = self.trans_poly_to_bbox(info["points"])  # 转换为bbox格式的 4点坐标形式!!!
 
             encode_res = self.tokenizer.encode(
                 text,
@@ -1155,7 +1155,7 @@ class VQATokenLabelEncode(object):
                 encode_res["token_type_ids"] = encode_res["token_type_ids"][1:-1]
                 encode_res["attention_mask"] = encode_res["attention_mask"][1:-1]
 
-            if self.use_textline_bbox_info:
+            if self.use_textline_bbox_info: # True
                 bbox = [info["bbox"]] * len(encode_res["input_ids"])
             else:
                 bbox = self.split_bbox(
@@ -1163,15 +1163,16 @@ class VQATokenLabelEncode(object):
                 )
             if len(bbox) <= 0:
                 continue
-            bbox = self._smooth_box(bbox, height, width)
-            if self.add_special_ids:
+            bbox = self._smooth_box(bbox, height, width) # 归一化后 扩大 1000倍 
+            if self.add_special_ids: # False
                 bbox.insert(0, [0, 0, 0, 0])
                 bbox.append([0, 0, 0, 0])
 
             # parse label
             if not self.infer_mode:
-                label = info["label"]
-                gt_label = self._parse_label(label, encode_res)
+                # label = info["label"] # class
+                label = info["class"]
+                gt_label = self._parse_label(label, encode_res) # [1, 2, 2, 2, 2]
 
             # construct entities for re
             if train_re:

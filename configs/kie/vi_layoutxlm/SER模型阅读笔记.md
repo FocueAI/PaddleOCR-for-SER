@@ -1,0 +1,1 @@
+https://github.com/mindspore-lab/mindocr/blob/main/configs/kie/vi_layoutxlm/README_CN.md

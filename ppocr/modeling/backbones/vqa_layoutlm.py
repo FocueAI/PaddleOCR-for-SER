@@ -62,13 +62,29 @@ class NLPBaseModel(nn.Layer):
     ):
         super(NLPBaseModel, self).__init__()
         if checkpoints is not None:  # load the trained model
-            self.model = model_class.from_pretrained(checkpoints)
+            print("-"*10)
+            print("load the trained model")
+
+            self.model = model_class.from_pretrained(checkpoints, num_classes=11)
         else:  # load the pretrained-model
             pretrained_model_name = pretrained_model_dict[base_model_class][mode]
             if type == "ser":
+                # self.model = model_class.from_pretrained(
+                #     pretrained_model_name, num_classes=kwargs["num_classes"], dropout=0) #, ignore_mismatched_sizes=True
+                # # )
                 self.model = model_class.from_pretrained(
-                    pretrained_model_name, num_classes=kwargs["num_classes"], dropout=0
+                    pretrained_model_name, num_classes=7, dropout=0, ignore_mismatched_sizes=True
                 )
+               # 手动重新定义分类器层
+                import paddle
+                self.model.classifier = paddle.nn.Linear(
+                    in_features=self.model.config["hidden_size"],
+                    out_features=kwargs["num_classes"]
+                ) 
+                
+                
+                
+                
             else:
                 self.model = model_class.from_pretrained(
                     pretrained_model_name, dropout=0
@@ -168,7 +184,7 @@ class LayoutXLMForSer(NLPBaseModel):
     def forward(self, x):
         if self.use_visual_backbone is True:
             image = x[4]
-        else:
+        else: # yes
             image = None
         x = self.model(
             input_ids=x[0],

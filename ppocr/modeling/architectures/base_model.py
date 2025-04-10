@@ -79,9 +79,9 @@ class BaseModel(nn.Layer):
 
     def forward(self, x, data=None):
         y = dict()
-        if self.use_transform:
+        if self.use_transform:  # not 
             x = self.transform(x)
-        if self.use_backbone:
+        if self.use_backbone: # yes
             x = self.backbone(x)
         if isinstance(x, dict):
             y.update(x)

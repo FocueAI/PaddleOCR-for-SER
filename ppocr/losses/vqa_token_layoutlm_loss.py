@@ -41,8 +41,8 @@ class VQASerTokenLayoutLMLoss(nn.Layer):
                     ]
                 )
                 == 1
-            )
-            active_output = predicts.reshape([-1, self.num_classes])[active_loss]
+            ) # 一维度向量，debug时，仅仅含有 37个 true
+            active_output = predicts.reshape([-1, self.num_classes])[active_loss] # .shape=[37,6]
             active_label = labels.reshape(
                 [
                     -1,
