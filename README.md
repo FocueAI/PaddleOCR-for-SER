@@ -1,6 +1,8 @@
+
 [<img src="https://img.shields.io/badge/Language-English-blue.svg">](README_en.md) | [<img src="https://img.shields.io/badge/Language-简体中文-red.svg">](README.md)
 
 <p align="center">
+ [ser对应的独立推理代码](https://github.com/FocueAI/ser-use-onnx.git)
  <img src="https://github.com/PaddlePaddle/PaddleOCR/releases/download/v2.8.0/PaddleOCR_logo.png" align="middle" width = "600"/>
 <p align="center">
 <p align="center">
