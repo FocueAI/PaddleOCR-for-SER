@@ -3,15 +3,15 @@ Global:
   epoch_num: &epoch_num 500
   log_smooth_window: 10
   print_batch_step: 10
-  save_model_dir: ./output/ser_vi_layoutxlm_xfund_zh
+  save_model_dir: ./output/ser_vi_layoutxlm_xfund_zh_4_14
   save_epoch_step: 2000
   # evaluation is run every 10 iterations after the 0th iteration
-  eval_batch_step: [ 0, 1] #[ 0, 155]
+  eval_batch_step: [ 0, 155]
   cal_metric_during_train: False
   save_inference_dir:
   use_visualdl: False
   seed: 2022
-  infer_img: ppstructure/docs/kie/input/zh_val_42.jpg
+  infer_img: train_data_new1/det_bookspine_text/test_imgs/n0801005-02-01_4.jpg
   d2s_train_image_shape: [3, 224, 224]
   # if you want to predict using the groundtruth ocr info,
   # you can use the following config
@@ -30,11 +30,12 @@ Architecture:
   Backbone:
     name: LayoutXLMForSer
     pretrained: False
-    checkpoints: /mnt/disk4/projects/expore/PaddleOCR-for-SER/output/ser_vi_layoutxlm_xfund_zh/best_accuracy
-    # checkpoints: 
+    # checkpoints: /mnt/disk4/projects/expore/PaddleOCR-for-SER/output/ser_vi_layoutxlm_xfund_zh/best_accuracy
+    checkpoints: 
     # one of base or vi
     mode: vi
-    num_classes: &num_classes 11
+    # 由于采用BIO标注，假设字典中包含n个字段（包含other）时，则类别数为2n-1; 假设字典中包含n个字段（不含other）时，则类别数为2n+1。
+    num_classes: &num_classes 13
 
 Loss:
   name: VQASerTokenLayoutLMLoss

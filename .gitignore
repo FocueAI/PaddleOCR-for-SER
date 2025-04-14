@@ -33,5 +33,10 @@ paddleocr.egg-info/
 test_tipc/web/models/
 test_tipc/web/node_modules/
 
-train_data*/
-
+train_data/
+train_data1/
+train_data_new1/det_bookspine_text/check_res/
+train_data_new1/det_bookspine_text/new_label_samples/
+train_data_new1/det_bookspine_text/test_imgs/
+train_data_new1/det_bookspine_text/train/
+train_data_new1/det_bookspine_text/val/
