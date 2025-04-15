@@ -65,7 +65,7 @@ class NLPBaseModel(nn.Layer):
             print("-"*10)
             print("load the trained model")
 
-            self.model = model_class.from_pretrained(checkpoints, num_classes=11)
+            self.model = model_class.from_pretrained(checkpoints, num_classes=kwargs["num_classes"])  # ** 如果写成 self.model = model_class.from_pretrained(checkpoints, 13) 还是会报错的哦！！！！！！！！！！！！
         else:  # load the pretrained-model
             pretrained_model_name = pretrained_model_dict[base_model_class][mode]
             if type == "ser":
